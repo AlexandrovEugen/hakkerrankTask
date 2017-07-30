@@ -8,32 +8,31 @@ public class Solution {
 
     public static boolean isBalanced(String expression) {
         final Stack<Character> brackets = new Stack<>();
-        for (int i = 0; i < expression.length(); i++) {
-            final Character bracket = expression.charAt(i);
-            if (bracket == '(' || bracket == '[' || bracket == '{') {
-                brackets.push(bracket);
-            } else if (bracket == ')' || bracket == ']' || bracket == '}') {
-                if (brackets.empty()) {
-                    return false;
-                } else {
+        if (expression.length() % 2 == 0) {
+            for (int i = 0; i < expression.length(); i++) {
+                final Character bracket = expression.charAt(i);
+                if (bracket == '(' || bracket == '[' || bracket == '{') {
                     brackets.push(bracket);
+                } else if (bracket == ')' || bracket == ']' || bracket == '}') {
+                    if (brackets.empty()) {
+                        return false;
+                    } else if (!isPair(brackets.pop(), expression.charAt(i))){
+                        return false;
+                    }
+                } else {
+                    throw new IllegalArgumentException();
                 }
-            } else {
-                throw new IllegalArgumentException();
+            }
+            if (brackets.empty()){
+                return true;
+            }
+            else {
+                return false;
             }
         }
-        if (expression.length() % 2 == 0) {
-            for (int i = 0; i < expression.length() / 2; i++) {
-                final Character openBracket = expression.charAt(i);
-                final Character closeBracket = brackets.pop();
-                if (!isPair(openBracket, closeBracket)) {
-                    return false;
-                }
-            }
-        } else {
+        else {
             return false;
         }
-        return true;
     }
 
     private static boolean isPair(Character openBracket, Character closeBracket) {
